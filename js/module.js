@@ -1,85 +1,52 @@
 registerController('LEDController', ['$api', '$scope', function($api, $scope) {
-    $scope.device = '';
+	$scope.device = '';
 
-    $api.request({
-        module: 'LEDConfigurator',
-        action: 'getDeviceType'
-    }, function(response) {
-        $scope.device = response;
-    });
+	$api.request({
+		module: 'LEDController',
+		action: 'getDeviceType'
+	}, function(response) {
+		$scope.device = response;
+	});
 }]);
 
+registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
+	$scope.enabled = false;
+	$scope.trigger = '';
+	$scope.mode = '';
+	$scope.delayOn = '';
+	$scope.delayOff = '';
+	$scope.interface = '';
 
-registerController('TetraYellowLEDController', ['$api', '$scope', function($api, $scope) {
-    $scope.trigger = '';
-    $scope.mode = '';
-    $scope.interface = '';
-    $scope.timeon = 0;
-    $scope.timeoff = 0;
+	$scope.getTetraYellow = (function() {
+		$api.request({
+			module: 'LEDController',
+			action: 'getTetraYellow'
+		}, function(response) {
+			$scope.enabled = response.enabled;
+			$scope.trigger = response.trigger;
+			$scope.mode = response.mode;
+			$scope.delayOn = response.delayOn;
+			$scope.delayOff = response.delayOff;
+			$scope.interface = response.interface;
+			console.log(response);
+		});
+	});
 
-    $api.request({
-        module: 'LEDConfigurator',
-        action: 'getTetraYellowLEDInfo'
-    }, function(response){
-        $scope.enabled = response.enabled;
-        $scope.trigger = response.trigger;
-        $scope.mode = response.mode;
-        $scope.interface = response.interface;
-        $scope.timeon = response.timeon;
-        $scope.timeoff = response.timeoff;
-    });
-}]);
+	$scope.setTetraYellow = (function() {
+		$api.request({
+			module: 'LEDController',
+			action: 'setTetraYellow',
+			enabled: $scope.enabled,
+			trigger: $scope.trigger,
+			mode: $scope.mode,
+			delayOn: $scope.delayOn,
+			delayOff: $scope.delayOff,
+			interface: $scope.interface
+		}, function(response) {
+			$scope.getTetraYellow();
+			console.log(response);
+		});
+	});
 
-registerController('TetraBlueLEDController', ['$api', '$scope', function($api, $scope) {
-    $scope.trigger = '';
-    $scope.mode = '';
-    $scope.interface = '';
-    $scope.timeon = 0;
-    $scope.timeoff = 0;
-
-    $api.request({
-        module: 'LEDConfigurator',
-        action: 'getTetraBlueLEDInfo'
-    }, function(response){
-        $scope.enabled = response.enabled;
-        $scope.trigger = response.trigger;
-        $scope.mode = response.mode;
-        $scope.interface = response.interface;
-        $scope.timeon = response.timeon;
-        $scope.timeoff = response.timeoff;
-    });
-}]);
-
-registerController('TetraRedLEDController', ['$api', '$scope', function($api, $scope) {
-    $scope.trigger = '';
-    $scope.mode = '';
-    $scope.interface = '';
-    $scope.timeon = 0;
-    $scope.timeoff = 0;
-
-    $api.request({
-        module: 'LEDConfigurator',
-        action: 'getTetraRedLEDInfo'
-    }, function(response){
-        $scope.enabled = response.enabled;
-        $scope.trigger = response.trigger;
-        $scope.mode = response.mode;
-        $scope.interface = response.interface;
-        $scope.timeon = response.timeon;
-        $scope.timeoff = response.timeoff;
-    });
-}]);
-
-registerController('NanoLEDController', ['$api', '$scope', function($api, $scope) {
-    $scope.enabled = false;
-    $scope.trigger = '';
-
-    $api.request({
-        module: 'LEDConfigurator',
-        action: 'getNanoLEDInfo'
-    }, function(response){
-        $scope.enabled = response.enabled;
-        $scope.trigger = response.trigger;
-        console.log(response);
-    });
+	$scope.getTetraYellow();
 }]);

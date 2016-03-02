@@ -1,123 +1,116 @@
 <?php namespace pineapple;
 
-class LEDConfigurator extends Module
+class LEDController extends Module
 {
-    public function route()
-    {
-        switch ($this->request->action) {
-            case 'getDeviceType':
-                $this->getDeviceType();
-                break;
-            case 'getNanoLEDInfo':
-                $this->getNanoLEDInfo();
-                break;
-            case 'getTetraBlueLEDInfo':
-                $this->getTetraBlueLEDInfo();
-                break;
-            case 'getTetraYellowLEDInfo':
-                $this->getTetraYellowLEDInfo();
-                break;
-            case 'getTetraRedLEDInfo':
-                $this->getTetraRedLEDInfo();
-                break;
-        }
-    } 
+	public function route()
+	{
+		switch ($this->request->action) {
+			case 'getDeviceType':
+				$this->getDeviceType();
+				break;
+			case 'getNanoLEDInfo':
+				$this->getNanoLEDInfo();
+				break;
+			case 'getTetraYellow':
+				$this->getTetraYellow();
+				break;
+			case 'setTetraYellow':
+				$this->setTetraYellow();
+				break;
+		}
+	}
 
-    private function getDeviceType()
-    {
-        $device = 'tetra';
+	private function restartLEDs()
+	{
+		exec('/etc/init.d/led restart');
+	}
 
-        if ($device == 'tetra'){
-            $this->response = 'tetra';
-        }
-        elseif ($device == 'nano') {
-            $this->response = 'nano';
-        }
-    }
+	private function getDeviceType()
+	{
+		$device = 'tetra';
 
-    private function getTetraYellowLEDInfo()
-    {
-        $trigger = $this->uciGet('system.@led[2].trigger');
+		if ($device == 'tetra'){
+			$this->response = 'tetra';
+		}
+		elseif ($device == 'nano') {
+			$this->response = 'nano';
+		}
+	}
 
-        if ($trigger == 'none') {
-            $this->response = array('enabled' => false, 'trigger' => $trigger);
-        } elseif ($trigger == 'netdev'){
-            $mode = $this->uciGet('system.@led[2].mode');
-            $interface = $this->uciGet('system.@led[2].dev');
-            if ($mode == 'link tx rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'txrx', 'interface' => $interface);
-            } elseif ($mode == 'link tx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'tx', 'interface' => $interface);
-            } elseif ($mode == 'link rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'rx', 'interface' => $interface);
-            }
-        } elseif ($trigger == 'timer') {
-            $timeon = $this->uciGet('system.@led[2].delayon');
-            $timeoff = $this->uciGet('system.@led[2].delayoff');
-            $this->response = array('enabled' => true, 'trigger' => $trigger, 'timeon' => $timeon, 'timeoff' => $timeoff);
-        } else {
-            $this->response = array('enabled' => true, 'trigger' => $trigger);
-        }
-    }
+	private function getTetraYellow()
+	{
+		$trigger = $this->uciGet('system.@led[2].trigger');
 
-    private function getTetraBlueLEDInfo()
-    {
-        $trigger = $this->uciGet('system.@led[0].trigger');
+		if ($trigger == 'none') {
+			$default = $this->uciGet('system.@led[2].default');
+			if($default == 0){
+				$this->response = array('enabled' => false, 'trigger' => $trigger);
+			} elseif($default == 1){
+				$this->response = array('enabled' => true, 'trigger' => $trigger);
+			}
+		} elseif ($trigger == 'netdev'){
+			$mode = $this->uciGet('system.@led[2].mode');
+			$interface = $this->uciGet('system.@led[2].dev');
+			if ($mode == 'link tx rx') {
+				$this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'link tx rx', 'interface' => $interface);
+			} elseif ($mode == 'link tx') {
+				$this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'link tx', 'interface' => $interface);
+			} elseif ($mode == 'link rx') {
+				$this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'link rx', 'interface' => $interface);
+			}
+		} elseif ($trigger == 'timer') {
+			$delayOn = $this->uciGet('system.@led[2].delayon');
+			$delayOff = $this->uciGet('system.@led[2].delayoff');
+			$this->response = array('enabled' => true, 'trigger' => $trigger, 'delayOn' => $delayOn, 'delayOff' => $delayOff);
+		} else {
+			$this->response = array('enabled' => true, 'trigger' => $trigger);
+		}
+	}
 
-        if ($trigger == 'none') {
-            $this->response = array('enabled' => false, 'trigger' => $trigger);
-        } elseif ($trigger == 'netdev'){
-            $mode = $this->uciGet('system.@led[0].mode');
-            $interface = $this->uciGet('system.@led[0].dev');
-            if ($mode == 'link tx rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'txrx', 'interface' => $interface);
-            } elseif ($mode == 'link tx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'tx', 'interface' => $interface);
-            } elseif ($mode == 'link rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'rx', 'interface' => $interface);
-            }
-        } elseif ($trigger == 'timer') {
-            $timeon = $this->uciGet('system.@led[0].delayon');
-            $timeoff = $this->uciGet('system.@led[0].delayoff');
-            $this->response = array('enabled' => true, 'trigger' => $trigger, 'timeon' => $timeon, 'timeoff' => $timeoff);
-        } else {
-            $this->response = array('enabled' => true, 'trigger' => $trigger);
-        }
-    }
+	private function setTetraYellow()
+	{
+		$enabled = $this->request->enabled;
+		$trigger = $this->request->trigger;
+		$mode = $this->request->mode;
+		$delayOn = $this->request->delayOn;
+		$delayOff = $this->request->delayOff;
+		$interface = $this->request->interface;
 
-    private function getTetraRedLEDInfo()
-        {
-        $trigger = $this->uciGet('system.@led[1].trigger');
+		if ($enabled == true) {
+			if ($trigger == 'none') {
+				$this->uciSet('system.@led[2].trigger', 'none');
+				$this->uciSet('system.@led[2].default', '1');
+				$this->restartLEDs();
+			} elseif ($trigger == 'netdev') {
+				$this->uciSet('system.@led[2].trigger', 'netdev');
+				$this->uciSet('system.@led[2].mode', "$mode");
+				$this->uciSet('system.@led[2].dev', "$interface");
+				$this->restartLEDs();
+			} elseif ($trigger == 'timer') {
+				$this->uciSet('system.@led[2].trigger', 'timer');
+				$this->uciSet('system.@led[2].delayon', "$delayOn");
+				$this->uciSet('system.@led[2].delayoff', "$delayOff");
+				$this->restartLEDs();
+			}
+		} elseif ($enabled == false) {
+			$this->uciSet('system.@led[2].trigger', 'none');
+			$this->uciSet('system.@led[2].default', '0');
+			$this->restartLEDs();
+		}
 
-        if ($trigger == 'none') {
-            $this->response = array('enabled' => false, 'trigger' => $trigger);
-        } elseif ($trigger == 'netdev'){
-            $mode = $this->uciGet('system.@led[1].mode');
-            $interface = $this->uciGet('system.@led[1].dev');
-            if ($mode == 'link tx rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'txrx', 'interface' => $interface);
-            } elseif ($mode == 'link tx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'tx', 'interface' => $interface);
-            } elseif ($mode == 'link rx') {
-                $this->response = array('enabled' => true, 'trigger' => $trigger, 'mode' => 'rx', 'interface' => $interface);
-            }
-        } elseif ($trigger == 'timer') {
-            $timeon = $this->uciGet('system.@led[1].delayon');
-            $timeoff = $this->uciGet('system.@led[1].delayoff');
-            $this->response = array('enabled' => true, 'trigger' => $trigger, 'timeon' => $timeon, 'timeoff' => $timeoff);
-        } else {
-            $this->response = array('enabled' => true, 'trigger' => $trigger);
-        }
-    }
+		$this->response = array('enabled' => $enabled, 'trigger' => $trigger,
+								'mode' => $mode, 'delayOn' => $delayOn,
+								'delayOff' => $delayOff, 'interface' => $interface);
+	}
 
-    private function getNanoLEDInfo()
-    {
-        $trigger = $this->uciGet('system.@led[0].trigger');
+	private function getNanoLEDInfo()
+	{
+		$trigger = $this->uciGet('system.@led[0].trigger');
 
-        if ($trigger == 'none') {
-            $this->response = array('enabled' => false, 'trigger' => $trigger);
-        } else {
-            $this->response = array('enabled' => true, 'trigger' => $trigger);
-        }
-    }
+		if ($trigger == 'none') {
+			$this->response = array('enabled' => false, 'trigger' => $trigger);
+		} else {
+			$this->response = array('enabled' => true, 'trigger' => $trigger);
+		}
+	}
 }
