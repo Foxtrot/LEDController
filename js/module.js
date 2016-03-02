@@ -11,7 +11,7 @@ registerController('LEDController', ['$api', '$scope', function($api, $scope) {
 
 registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 	$scope.enabled = false;
-	$scope.trigger = '';
+	$scope.trigger = 'link tx rx';
 	$scope.mode = '';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
@@ -54,7 +54,7 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
 	$scope.enabled = false;
 	$scope.trigger = '';
-	$scope.mode = '';
+	$scope.mode = 'link tx rx';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
@@ -96,7 +96,7 @@ registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
 registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 	$scope.enabled = false;
 	$scope.trigger = '';
-	$scope.mode = '';
+	$scope.mode = 'link tx rx';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
