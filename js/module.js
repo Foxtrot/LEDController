@@ -134,3 +134,45 @@ registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 
 	$scope.getTetraRed();
 }]);
+
+registerController('NanoBlue', ['$api', '$scope', function($api, $scope) {
+	$scope.enabled = false;
+	$scope.trigger = '';
+	$scope.mode = 'link tx rx';
+	$scope.delayOn = '';
+	$scope.delayOff = '';
+	$scope.interface = '';
+
+	$scope.getNanoBlue = (function() {
+		$api.request({
+			module: 'LEDController',
+			action: 'getNanoBlue'
+		}, function(response) {
+			$scope.enabled = response.enabled;
+			$scope.trigger = response.trigger;
+			$scope.mode = response.mode;
+			$scope.delayOn = response.delayOn;
+			$scope.delayOff = response.delayOff;
+			$scope.interface = response.interface;
+			console.log(response);
+		});
+	});
+
+	$scope.setNanoBlue = (function() {
+		$api.request({
+			module: 'LEDController',
+			action: 'setNanoBlue',
+			enabled: $scope.enabled,
+			trigger: $scope.trigger,
+			mode: $scope.mode,
+			delayOn: $scope.delayOn,
+			delayOff: $scope.delayOff,
+			interface: $scope.interface
+		}, function(response) {
+			$scope.getNanoBlue();
+			console.log(response);
+		});
+	});
+
+	$scope.getNanoBlue();
+}]);
