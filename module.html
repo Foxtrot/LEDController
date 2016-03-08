@@ -2,7 +2,6 @@
 	<div class="panel panel-default">
 		<div class="panel-heading pointer" data-toggle="collapse" data-target="#LEDController" data-parent="#accordion">
 			<h3 class="panel-title">LED Configurator
-				<span class="pull-right caret"></span></h3>
 			</div>
 			<div id="LEDController" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -26,6 +25,7 @@
 						<h3 class="panel-title">Yellow</h3>
 					</div>
 					<div class="panel-body">
+                        <p class="well well-sm alert-success" ng-show="savedConfig">LED Configuration Updated</p>
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" ng-model="enabled" ng-checked="enabled"> Enabled
@@ -85,6 +85,7 @@
 						<h3 class="panel-title">Blue</h3>
 					</div>
 					<div class="panel-body">
+                        <p class="well well-sm alert-success" ng-show="savedConfig">LED Configuration Updated</p>
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" ng-model="enabled" ng-checked="enabled"> Enabled
@@ -144,6 +145,7 @@
 						<h3 class="panel-title">Red</h3>
 					</div>
 					<div class="panel-body">
+                        <p class="well well-sm alert-success" ng-show="savedConfig">LED Configuration Updated</p>
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" ng-model="enabled" ng-checked="enabled"> Enabled
@@ -208,6 +210,7 @@
 						<h3 class="panel-title">Blue</h3>
 					</div>
 					<div class="panel-body">
+                        <p class="well well-sm alert-success" ng-show="savedConfig">LED Configuration Updated</p>
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" ng-model="enabled" ng-checked="enabled"> Enabled

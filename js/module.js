@@ -1,4 +1,4 @@
-registerController('LEDController', ['$api', '$scope', function($api, $scope) {
+registerController('LEDController', ['$api', '$scope', '$timeout', function($api, $scope, $timeout) {
 	$scope.device = '';
 
 	$api.request({
@@ -9,13 +9,14 @@ registerController('LEDController', ['$api', '$scope', function($api, $scope) {
 	});
 }]);
 
-registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
+registerController('TetraYellow', ['$api', '$scope', '$timeout', function($api, $scope, $timeout) {
 	$scope.enabled = false;
 	$scope.trigger = 'link tx rx';
 	$scope.mode = '';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
+    $scope.savedConfig = false;
 
 	$scope.getTetraYellow = (function() {
 		$api.request({
@@ -27,7 +28,7 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 			$scope.mode = response.mode;
 			$scope.delayOn = response.delayOn;
 			$scope.delayOff = response.delayOff;
-			$scope.interface = response.interface;	
+			$scope.interface = response.interface;
 		});
 	});
 
@@ -42,6 +43,12 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 			delayOff: $scope.delayOff,
 			interface: $scope.interface
 		}, function(response) {
+            if (response.success == true) {
+                $scope.savedConfig = true;
+                $timeout(function(){
+                        $scope.savedConfig = false;
+                    }, 2000);
+                }
 			$scope.getTetraYellow();
 		});
 	});
@@ -49,13 +56,14 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 	$scope.getTetraYellow();
 }]);
 
-registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
+registerController('TetraBlue', ['$api', '$scope', '$timeout', function($api, $scope, $timeout) {
 	$scope.enabled = false;
 	$scope.trigger = '';
 	$scope.mode = 'link tx rx';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
+    $scope.savedConfig = false;
 
 	$scope.getTetraBlue = (function() {
 		$api.request({
@@ -82,20 +90,26 @@ registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
 			delayOff: $scope.delayOff,
 			interface: $scope.interface
 		}, function(response) {
+            if (response.success == true) {
+                $scope.savedConfig = true;
+                $timeout(function(){
+                        $scope.savedConfig = false;
+                    }, 2000);
+                }
 			$scope.getTetraBlue();
-
 		});
 	});
 	$scope.getTetraBlue();
 }]);
 
-registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
+registerController('TetraRed', ['$api', '$scope', '$timeout', function($api, $scope, $timeout) {
 	$scope.enabled = false;
 	$scope.trigger = '';
 	$scope.mode = 'link tx rx';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
+    $scope.savedConfig = false;
 
 	$scope.getTetraRed = (function() {
 		$api.request({
@@ -122,6 +136,12 @@ registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 			delayOff: $scope.delayOff,
 			interface: $scope.interface
 		}, function(response) {
+            if (response.success == true) {
+                $scope.savedConfig = true;
+                $timeout(function(){
+                        $scope.savedConfig = false;
+                    }, 2000);
+                }
 			$scope.getTetraRed();
 		});
 	});
@@ -129,13 +149,14 @@ registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 	$scope.getTetraRed();
 }]);
 
-registerController('NanoBlue', ['$api', '$scope', function($api, $scope) {
+registerController('NanoBlue', ['$api', '$scope', '$timeout', function($api, $scope, $timeout) {
 	$scope.enabled = false;
 	$scope.trigger = '';
 	$scope.mode = 'link tx rx';
 	$scope.delayOn = '';
 	$scope.delayOff = '';
 	$scope.interface = '';
+    $scope.savedConfig = false;
 
 	$scope.getNanoBlue = (function() {
 		$api.request({
@@ -162,6 +183,12 @@ registerController('NanoBlue', ['$api', '$scope', function($api, $scope) {
 			delayOff: $scope.delayOff,
 			interface: $scope.interface
 		}, function(response) {
+            if (response.success == true) {
+                $scope.savedConfig = true;
+                $timeout(function(){
+                        $scope.savedConfig = false;
+                    }, 2000);
+                }
 			$scope.getNanoBlue();
 		});
 	});
