@@ -27,8 +27,7 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 			$scope.mode = response.mode;
 			$scope.delayOn = response.delayOn;
 			$scope.delayOff = response.delayOff;
-			$scope.interface = response.interface;
-			console.log(response);
+			$scope.interface = response.interface;	
 		});
 	});
 
@@ -44,7 +43,6 @@ registerController('TetraYellow', ['$api', '$scope', function($api, $scope) {
 			interface: $scope.interface
 		}, function(response) {
 			$scope.getTetraYellow();
-			console.log(response);
 		});
 	});
 
@@ -70,7 +68,6 @@ registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
 			$scope.delayOn = response.delayOn;
 			$scope.delayOff = response.delayOff;
 			$scope.interface = response.interface;
-			console.log(response);
 		});
 	});
 
@@ -86,10 +83,9 @@ registerController('TetraBlue', ['$api', '$scope', function($api, $scope) {
 			interface: $scope.interface
 		}, function(response) {
 			$scope.getTetraBlue();
-			console.log(response);
+
 		});
 	});
-
 	$scope.getTetraBlue();
 }]);
 
@@ -112,7 +108,6 @@ registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 			$scope.delayOn = response.delayOn;
 			$scope.delayOff = response.delayOff;
 			$scope.interface = response.interface;
-			console.log(response);
 		});
 	});
 
@@ -128,7 +123,6 @@ registerController('TetraRed', ['$api', '$scope', function($api, $scope) {
 			interface: $scope.interface
 		}, function(response) {
 			$scope.getTetraRed();
-			console.log(response);
 		});
 	});
 
@@ -154,7 +148,6 @@ registerController('NanoBlue', ['$api', '$scope', function($api, $scope) {
 			$scope.delayOn = response.delayOn;
 			$scope.delayOff = response.delayOff;
 			$scope.interface = response.interface;
-			console.log(response);
 		});
 	});
 
@@ -170,7 +163,6 @@ registerController('NanoBlue', ['$api', '$scope', function($api, $scope) {
 			interface: $scope.interface
 		}, function(response) {
 			$scope.getNanoBlue();
-			console.log(response);
 		});
 	});
 
