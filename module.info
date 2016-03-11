@@ -1,6 +1,6 @@
 {
     "title": "LED Controller",
     "description": "This module allows you to control LEDs.",
-    "version": "1.0",
+    "version": "1.1",
     "author": "Foxtrot"
 }
