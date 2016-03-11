@@ -8,6 +8,9 @@ class LEDController extends Module
             case 'getDeviceType':
                 $this->getDeviceType();
                 break;
+            case 'resetLEDs':
+                $this->resetLEDs();
+                break;
             case 'getTetraYellow':
                 $this->getTetraYellow();
                 break;
@@ -42,7 +45,7 @@ class LEDController extends Module
 
     private function getDeviceType()
     {
-        $device = $this->getDevice;
+        $device = $this->getDevice();
 
         if ($device == 'tetra') {
             $this->response = 'tetra';
@@ -329,5 +332,30 @@ class LEDController extends Module
         $this->response = array('enabled' => $enabled, 'trigger' => $trigger,
         'mode' => $mode, 'delayOn' => $delayOn,
         'delayOff' => $delayOff, 'interface' => $interface, 'success' => true);
+    }
+
+    private function resetLEDs()
+    {
+        $device = $this->getDevice();
+
+        if ($device == 'tetra') {
+            $this->uciSet('system.@led[0].trigger', 'netdev');
+            $this->uciSet('system.@led[0].mode', 'link tx rx');
+            $this->uciSet('system.@led[0].dev', 'wlan0');
+            $this->uciSet('system.@led[1].trigger', 'netdev');
+            $this->uciSet('system.@led[1].mode', 'link tx rx');
+            $this->uciSet('system.@led[1].dev', 'wlan1mon');
+            $this->uciSet('system.@led[2].trigger', 'netdev');
+            $this->uciSet('system.@led[2].mode', 'link tx rx');
+            $this->uciSet('system.@led[2].dev', 'eth0');
+            $this->restartLEDs();
+            $this->response = array('success' => true);
+        } else {
+            $this->uciSet('system.@led[0].trigger', 'netdev');
+            $this->uciSet('system.@led[0].mode', 'link tx rx');
+            $this->uciSet('system.@led[0].dev', 'wlan0');
+            $this->restartLEDs();
+            $this->response = array('success' => true);
+        }
     }
 }
